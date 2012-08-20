@@ -167,7 +167,7 @@
 ;; This software is provided by Roland Walker "AS IS" and any express
 ;; or implied warranties, including, but not limited to, the implied
 ;; warranties of merchantability and fitness for a particular
-;; purpose are disclaimed. In no event shall Roland Walker or
+;; purpose are disclaimed.  In no event shall Roland Walker or
 ;; contributors be liable for any direct, indirect, incidental,
 ;; special, exemplary, or consequential damages (including, but not
 ;; limited to, procurement of substitute goods or services; loss of
@@ -360,7 +360,7 @@ The format for key sequences is as defined by `kbd'."
 
 ;;; variables
 
-(defvar back-button-mode                     nil "Whether back-button-mode minor-mode is on.")
+(defvar back-button-mode                     nil "Whether `back-button-mode' minor-mode is on.")
 (defvar back-button-local-marks-copy         nil "A remembered set of local marks.")
 (defvar back-button-global-marks-copy        nil "A remembered set of global marks.")
 (defvar back-button-global-disable-direction nil "Supplementary info for disabling toolbar buttons.")
@@ -463,7 +463,7 @@ The format for key sequences is as defined by `kbd'."
                                    (define-key map (kbd "<mode-line> <C-wheel-up>"   ) 'back-button-local-backward)
                                    (define-key map (kbd "<mode-line> <C-wheel-down>" ) 'back-button-local-forward)
                                    (define-key map (kbd "<mode-line> <down-mouse-3>" )  menu-map)
-                                   map) "Keymap for the back-button lighter")
+                                   map) "Keymap for the back-button lighter.")
 
 (callf propertize back-button-mode-lighter 'local-map back-button-lighter-map
                                            'help-echo "Back-button: mouse-wheel and control-mouse-wheel to navigate")
@@ -471,7 +471,10 @@ The format for key sequences is as defined by `kbd'."
 ;;; macros
 
 (defmacro back-button-called-interactively-p (&optional kind)
-  "A backward-compatible version of `called-interactively-p'."
+  "A backward-compatible version of `called-interactively-p'.
+
+Optional KIND is as documented at `called-interactively-p'
+in GNU Emacs 24.1 or higher."
   `(if (eq 0 (cdr (subr-arity (symbol-function 'called-interactively-p))))
       (called-interactively-p)
     (called-interactively-p ,kind)))
@@ -679,7 +682,9 @@ web browser back-button.)"
   (setq back-button-global-disable-direction nil))
 
 (defun back-button-visible-mark-show (type)
-  "Show marks temporarily using `visible-mark'."
+  "Show marks temporarily using `visible-mark'.
+
+TYPE may be 'global or 'local."
   (when (and (featurep 'visible-mark)
              (not visible-mark-mode))
     (dolist (win (window-list))
@@ -694,7 +699,7 @@ web browser back-button.)"
               (visible-mark-move-overlays))))))))
 
 (defun back-button-find-position (thumb type)
-  "Find the position of the thumb in the mark ring.
+  "Find the position of THUMB in the mark ring.
 
 TYPE may be 'global or 'local."
   (let ((ring global-mark-ring)
@@ -730,7 +735,12 @@ traversal progress."
      (popup-volatile msg :box t :around t :delay back-button-index-timeout :face '(:background "Gray20" :foreground "#C0C0C0"))))))
 
 (defun back-button-maybe-record-start (type interactive)
-  "Push mark for the first of a series of interactive back-button commands."
+  "Push mark for the first of a series of interactive back-button commands.
+
+TYPE may be 'local or 'global.
+
+INTERACTIVE is a boolean value, noting whether this function was
+called from an interactive command."
   (when (and interactive
              (not (memq last-command back-button-commands))
              (not back-button-never-push-mark))
