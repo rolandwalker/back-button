@@ -819,7 +819,8 @@ an exact duplicate of the current topmost mark onto `global-mark-ring'."
 ;; coding: utf-8
 ;; End:
 ;;
-;; LocalWords:
+;; LocalWords:  BackButton smartrep NOMSG CONSECUTIVES fset nomsg
+;; LocalWords:  callf imenu
 ;;
 
 ;;; back-button.el ends here
