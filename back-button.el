@@ -4,11 +4,11 @@
 ;;
 ;; Author: Roland Walker walker@pobox.com
 ;; URL: https://github.com/rolandwalker/back-button.el
-;; Version: 0.6.0
-;; Last-Updated: 26 Jul 2012
+;; Version: 0.6.1
+;; Last-Updated: 23 Aug 2012
 ;; EmacsWiki: BackButton
 ;; Keywords: Navigation
-;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (ucs-utils "0.6.0"))
+;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (ucs-utils "0.6.0") (persistent-soft "0.8.0") (pcache "0.2.3"))
 ;;
 ;; Simplified BSD License
 ;;
@@ -201,7 +201,7 @@
 ;;;###autoload
 (defgroup back-button nil
   "Visual navigation through mark rings."
-  :version "0.6.0"
+  :version "0.6.1"
   :link '(emacs-commentary-link "back-button")
   :prefix "back-button-"
   :group 'extensions
