@@ -189,12 +189,23 @@
 
 ;; for let*, decf, remove-if-not, callf, position
 (eval-when-compile
+  (defvar visible-mark-mode)
+  (defvar visible-mark-overlays)
   (require 'cl))
 
 (require 'smartrep     nil t)
 (require 'nav-flash    nil t)
 (require 'visible-mark nil t)
 (require 'ucs-utils    nil t)
+
+(declare-function ucs-utils-char                    "ucs-utils.el")
+(declare-function smartrep-define-key               "smartrep.el")
+(declare-function visible-mark-initialize-overlays  "visible-mark.el")
+(declare-function visible-mark-initialize-faces     "visible-mark.el")
+(declare-function visible-mark-move-overlays        "visible-mark.el")
+(declare-function back-button-push-mark             "back-button.el")
+(declare-function remove-if-not                     "cl-seq.el")
+(declare-function position                          "cl-seq.el")
 
 ;;; customizable variables
 
@@ -475,9 +486,9 @@ The format for key sequences is as defined by `kbd'."
 
 Optional KIND is as documented at `called-interactively-p'
 in GNU Emacs 24.1 or higher."
-  `(if (eq 0 (cdr (subr-arity (symbol-function 'called-interactively-p))))
-      (called-interactively-p)
-    (called-interactively-p ,kind)))
+  (if (eq 0 (cdr (subr-arity (symbol-function 'called-interactively-p))))
+      '(called-interactively-p)
+    `(called-interactively-p ,kind)))
 
 ;;; aliases et al
 
@@ -684,7 +695,7 @@ web browser back-button.)"
     (dolist (buf (buffer-list))
       (with-current-buffer buf
         (when visible-mark-overlays
-          (mapcar 'delete-overlay visible-mark-overlays)
+          (mapc 'delete-overlay visible-mark-overlays)
           (setq visible-mark-overlays nil)))))
   (setq back-button-global-disable-direction nil))
 
@@ -826,6 +837,7 @@ an exact duplicate of the current topmost mark onto `global-mark-ring'."
 ;; mangle-whitespace: t
 ;; require-final-newline: t
 ;; coding: utf-8
+;; byte-compile-warnings: (not cl-functions)
 ;; End:
 ;;
 ;; LocalWords:  BackButton smartrep NOMSG CONSECUTIVES fset nomsg
