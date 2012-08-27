@@ -538,7 +538,7 @@ This command is somewhat like a fancier version of
 `pop-to-mark-command', though it leaves the mark and
 `mark-ring' in a different state."
   (interactive)
-  (back-button-maybe-record-start 'local (called-interactively-p 'any))
+  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
   (back-button-local nil))
 
 ;;;###autoload
@@ -550,7 +550,7 @@ Unlike `back-button-local', ignores any prefix argument.
 This command is somewhat like the reverse of
 `pop-to-mark-command'."
   (interactive)
-  (back-button-maybe-record-start 'local (called-interactively-p 'any))
+  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
   (back-button-local '(4)))
 
 ;;;###autoload
@@ -562,7 +562,7 @@ Unlike `back-button-global', ignores any prefix argument.
 This command is much like a fancier version of
 `pop-global-mark'."
   (interactive)
-  (back-button-maybe-record-start 'global (called-interactively-p 'any))
+  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
   (back-button-global nil))
 
 ;;;###autoload
@@ -573,7 +573,7 @@ Unlike `back-button-global', ignores any prefix argument.
 
 This command is much like the reverse of `pop-global-mark'."
   (interactive)
-  (back-button-maybe-record-start 'global (called-interactively-p 'any))
+  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
   (back-button-global '(4)))
 
 ;;;###autoload
@@ -587,7 +587,7 @@ With universal prefix ARG, rotate the ring in the opposite
 direction.  (The \"forward\" direction by analogy with a
 web browser back-button.)"
   (interactive "P")
-  (back-button-maybe-record-start 'local (called-interactively-p 'any))
+  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
   (let ((pos (point))
         (counter (length mark-ring))
         (thumb nil)
@@ -639,7 +639,7 @@ With universal prefix ARG, rotate the ring in the opposite
 direction.  (The \"forward\" direction by analogy with a
 web browser back-button.)"
   (interactive "P")
-  (back-button-maybe-record-start 'global (called-interactively-p 'any))
+  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
   (let ((pos (point))
         (buf (current-buffer))
         (counter (length global-mark-ring))
