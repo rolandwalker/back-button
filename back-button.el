@@ -490,6 +490,7 @@ in GNU Emacs 24.1 or higher."
 
 ;;; minor-mode setup
 
+;;;###autoload
 (define-minor-mode back-button-mode
   "Turn on back-button-mode.
 
@@ -516,6 +517,7 @@ is 'toggle."
 
 ;;; interactive commands
 
+;;;###autoload
 (defun back-button-local-backward ()
   "Run `back-button-local' in the backward direction.
 
@@ -528,6 +530,7 @@ This command is somewhat like a fancier version of
   (back-button-maybe-record-start 'local (called-interactively-p 'any))
   (back-button-local nil))
 
+;;;###autoload
 (defun back-button-local-forward ()
   "Run `back-button-local' in the forward direction.
 
@@ -539,6 +542,7 @@ This command is somewhat like the reverse of
   (back-button-maybe-record-start 'local (called-interactively-p 'any))
   (back-button-local '(4)))
 
+;;;###autoload
 (defun back-button-global-backward ()
   "Run `back-button-global' in the backward direction.
 
@@ -550,6 +554,7 @@ This command is much like a fancier version of
   (back-button-maybe-record-start 'global (called-interactively-p 'any))
   (back-button-global nil))
 
+;;;###autoload
 (defun back-button-global-forward ()
   "Run `back-button-global' in the forward direction.
 
@@ -560,6 +565,7 @@ This command is much like the reverse of `pop-global-mark'."
   (back-button-maybe-record-start 'global (called-interactively-p 'any))
   (back-button-global '(4)))
 
+;;;###autoload
 (defun back-button-local (arg)
   "Navigate through `mark-ring', using `back-button-pop-local-mark'.
 
@@ -611,6 +617,7 @@ web browser back-button.)"
                                        (make-string posn back-button-spacer-char)))))
 
 
+;;;###autoload
 (defun back-button-global (arg)
   "Navigate through `global-mark-ring', using `pop-global-mark'.
 
@@ -775,6 +782,8 @@ setting the mark."
 
 ;; this function can replace push-mark in many circumstances
 ;; todo make handling of duplicates consistent btw local and global
+
+;;;###autoload
 (defun back-button-push-mark-local-and-global (&optional location nomsg activate consecutives)
   "Push mark at LOCATION, and unconditionally add to `global-mark-ring'.
 
