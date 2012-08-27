@@ -67,3 +67,10 @@ C-x &lt;right&gt;    go forward in (buffer-local) `mark-ring`
 When the smartrep package is installed, the `C-x` prefix need not
 be used for consecutive `back-button` commands.
 
+Compatibility and Requirements
+------------------------------
+Tested only on GNU Emacs version 24.1
+
+Uses if present: smartrep.el, nav-flash.el, visible-mark.el,
+ucs-utils.el
+

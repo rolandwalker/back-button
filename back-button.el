@@ -89,9 +89,12 @@
 ;;    `global-mark-ring' not contain consecutive marks in the same
 ;;    buffer.  However, no such issues have been observed.
 ;;
-;; Compatibility
+;; Compatibility and Requirements
 ;;
 ;;    Tested only on GNU Emacs version 24.1
+;;
+;;    Uses if present: smartrep.el, nav-flash.el, visible-mark.el,
+;;                     ucs-utils.el
 ;;
 ;; Bugs
 ;;
