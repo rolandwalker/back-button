@@ -7,7 +7,7 @@
 ;; Version: 0.6.2
 ;; Last-Updated: 27 Aug 2012
 ;; EmacsWiki: BackButton
-;; Keywords: Navigation
+;; Keywords: convenience, navigation, interface
 ;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (ucs-utils "0.6.0") (persistent-soft "0.8.0") (pcache "0.2.3"))
 ;;
 ;; Simplified BSD License
