@@ -71,6 +71,6 @@ Compatibility and Requirements
 ------------------------------
 Tested only on GNU Emacs version 24.1
 
-Uses if present: smartrep.el, nav-flash.el, visible-mark.el,
-ucs-utils.el
+Uses if present: [smartrep.el](http://github.com/myuhe/smartrep.el), [nav-flash.el](http://github.com/rolandwalker/nav-flash), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el),
+[ucs-utils.el](http://github.com/rolandwalker/ucs-utils)
 
