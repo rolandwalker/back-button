@@ -385,7 +385,8 @@ The format for key sequences is as defined by `kbd'."
                                back-button-local
                                back-button-local-backward
                                back-button-local-forward
-                               ))
+                               )
+  "List of back-button interactive navigation commands.")
 
 (defvar back-button-spacer-char     ?.  "Character used to indicate marks available for navigation.")
 (defvar back-button-thumb-char      ?o  "Character used to indicate current mark.")
