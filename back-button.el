@@ -300,8 +300,8 @@ Set to nil or 0 for no timeout."
 (defcustom back-button-smartrep-prefix "C-x"
   "Prefix key for smartrep.el bindings.
 
-Smartrep bindings will be installed for all keystrokes below
-which match this prefix.
+Smartrep bindings will be installed for all back-button key
+bindings which match this prefix.
 
 The format for key sequences is as defined by `kbd'.
 
