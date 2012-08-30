@@ -402,26 +402,16 @@ The format for key sequences is as defined by `kbd'."
 (if (and (stringp back-button-smartrep-prefix)
          (length back-button-smartrep-prefix))
     (let ((keys nil))
-      (dolist (cmd '(
-                     back-button-global
-                     back-button-global-backward
-                     back-button-global-forward
-                     back-button-local
-                     back-button-local-backward
-                     back-button-local-forward
-                     ))
+      (dolist (cmd back-button-commands)
         (dolist (k (remove-if-not #'(lambda (x)
                                       (string-match-p (concat "\\`" back-button-smartrep-prefix "\\>") x))
                                   (symbol-value (intern (concat (symbol-name cmd) "-keystrokes")))))
           (push (cons (replace-regexp-in-string (concat "\\`" back-button-smartrep-prefix "\\>[ \t]*") "" k) cmd) keys)))
       (smartrep-define-key back-button-mode-map back-button-smartrep-prefix keys))
   ;; else
-  (define-key back-button-mode-map (read-kbd-macro back-button-global-keystrokes)           'back-button-global)
-  (define-key back-button-mode-map (read-kbd-macro back-button-global-backward-keystrokes)  'back-button-global-backward)
-  (define-key back-button-mode-map (read-kbd-macro back-button-global-forward-keystrokes)   'back-button-global-forward)
-  (define-key back-button-mode-map (read-kbd-macro back-button-local-keystrokes)            'back-button-local)
-  (define-key back-button-mode-map (read-kbd-macro back-button-local-backward-keystrokes)   'back-button-local-backward)
-  (define-key back-button-mode-map (read-kbd-macro back-button-local-forward-keystrokes)    'back-button-local-forward))
+  (dolist (cmd back-button-commands)
+    (dolist (k (symbol-value (intern (concat (symbol-name cmd) "-keystrokes"))))
+      (define-key back-button-mode-map (read-kbd-macro k) cmd))))
 
 ;;; toolbar
 
