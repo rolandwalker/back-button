@@ -469,6 +469,10 @@ The format for key sequences is as defined by `kbd'."
                                    (define-key map (kbd "<mode-line> <wheel-down>"   ) 'back-button-global-forward)
                                    (define-key map (kbd "<mode-line> <C-wheel-up>"   ) 'back-button-local-backward)
                                    (define-key map (kbd "<mode-line> <C-wheel-down>" ) 'back-button-local-forward)
+                                   (define-key map (kbd "<mode-line> <mouse-4>"      ) 'back-button-global-backward)
+                                   (define-key map (kbd "<mode-line> <mouse-5>"      ) 'back-button-global-forward)
+                                   (define-key map (kbd "<mode-line> <C-mouse-4>"    ) 'back-button-local-backward)
+                                   (define-key map (kbd "<mode-line> <C-mouse-5>"    ) 'back-button-local-forward)
                                    (define-key map (kbd "<mode-line> <down-mouse-3>" )  menu-map)
                                    map) "Keymap for the back-button lighter.")
 
