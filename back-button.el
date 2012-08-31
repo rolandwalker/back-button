@@ -401,7 +401,8 @@ The format for key sequences is as defined by `kbd'."
 (defvar back-button-mode-map (make-sparse-keymap) "Keymap for `back-button-mode' minor-mode.")
 
 (if (and (stringp back-button-smartrep-prefix)
-         (length back-button-smartrep-prefix))
+         (length back-button-smartrep-prefix)
+         (featurep 'smartrep))
     (let ((keys nil))
       (dolist (cmd back-button-commands)
         (dolist (k (remove-if-not #'(lambda (x)
