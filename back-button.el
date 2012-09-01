@@ -477,6 +477,7 @@ The format for key sequences is as defined by `kbd'."
                                    map) "Keymap for the back-button lighter.")
 
 (callf propertize back-button-mode-lighter 'local-map back-button-lighter-map
+                                           'keymap back-button-lighter-map
                                            'help-echo "Back-button: mouse-wheel and control-mouse-wheel to navigate")
 
 ;;; macros
