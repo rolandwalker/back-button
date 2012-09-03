@@ -219,7 +219,7 @@
   :version "0.6.3"
   :link '(emacs-commentary-link "back-button")
   :prefix "back-button-"
-  :group 'extensions
+  :group 'convenience
   :group 'navigation)
 
 (defcustom back-button-mode-lighter " back"
