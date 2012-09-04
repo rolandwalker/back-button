@@ -3,8 +3,20 @@ Overview
 
 Visual navigation through mark rings in Emacs.
 
+![back-button example](https://raw.github.com/rolandwalker/back-button/master/back_button_example.png)
+
+Quickstart
+----------
+
+	(require 'back-button)
+	(back-button-mode 1)
+	press the plus sign in the toolbar to create a mark
+	press the arrows in the toolbar to navigate marks
+	or use C-x C-Space as usual
+
 back-button
 -----------
+
 Back-button provides an alternative method for navigation by
 analogy with the "back" button in a web browser.
 
@@ -37,8 +49,22 @@ commands and/or set `back-button-never-push-mark` in customize.
 When the visible-marks package is installed, marks will be
 made visible in the current buffer during navigation.
 
+Default key bindings
+--------------------
+	C-x C-<SPC>    go back in `global-mark-ring`, respects prefix arg  
+	C-x C-<left>   go back in `global-mark-ring`  
+	C-x C-<right>  go forward in `global-mark-ring`  
+
+	C-x <SPC>      go back in (buffer-local) `mark-ring`, respects prefix arg  
+	C-x <left>     go back in (buffer-local) `mark-ring`  
+	C-x <right>    go forward in (buffer-local) `mark-ring`  
+
+When the `smartrep` package is installed, the `C-x` prefix need
+not be used for consecutive `back-button` commands.
+
 Notes
------------
+-----
+
 This library depends upon other commands pushing the mark to
 provide useful waypoints for navigation.  This is a common
 convention, but not universal.
@@ -53,19 +79,6 @@ Theoretically, `back-button-push-mark-local-and-global` could
 cause issues with Lisp code which depends on the convention that
 `global-mark-ring` not contain consecutive marks in the same
 buffer.  However, no such issues have been observed.
-
-Default key bindings
------------
-C-x C-&lt;SPC&gt;    go back in `global-mark-ring`, respects prefix arg  
-C-x C-&lt;left&gt;   go back in `global-mark-ring`  
-C-x C-&lt;right&gt;  go forward in `global-mark-ring`  
-
-C-x &lt;SPC&gt;      go back in (buffer-local) `mark-ring`, respects prefix arg  
-C-x &lt;left&gt;     go back in (buffer-local) `mark-ring`  
-C-x &lt;right&gt;    go forward in (buffer-local) `mark-ring`  
-
-When the smartrep package is installed, the `C-x` prefix need not
-be used for consecutive `back-button` commands.
 
 Compatibility and Requirements
 ------------------------------
