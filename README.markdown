@@ -9,9 +9,13 @@ Quickstart
 ----------
 
 	(require 'back-button)
+
 	(back-button-mode 1)
+
 	press the plus sign in the toolbar to create a mark
+
 	press the arrows in the toolbar to navigate marks
+
 	or use C-x C-Space as usual
 
 back-button
@@ -51,6 +55,7 @@ made visible in the current buffer during navigation.
 
 Default key bindings
 --------------------
+
 	C-x C-<SPC>    go back in `global-mark-ring`, respects prefix arg  
 	C-x C-<left>   go back in `global-mark-ring`  
 	C-x C-<right>  go forward in `global-mark-ring`  
@@ -82,6 +87,7 @@ buffer.  However, no such issues have been observed.
 
 Compatibility and Requirements
 ------------------------------
+
 Tested on GNU Emacs versions 23.3 and 24.1
 
 Uses if present: [smartrep.el](http://github.com/myuhe/smartrep.el), [nav-flash.el](http://github.com/rolandwalker/nav-flash), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el),
