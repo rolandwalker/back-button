@@ -414,20 +414,23 @@ The format for key sequences is as defined by `kbd'."
 
 (defvar back-button-mode-map (make-sparse-keymap) "Keymap for `back-button-mode' minor-mode.")
 
-(if (and (stringp back-button-smartrep-prefix)
-         (length back-button-smartrep-prefix)
-         (featurep 'smartrep))
-    (let ((keys nil))
-      (dolist (cmd back-button-commands)
-        (dolist (k (remove-if-not #'(lambda (x)
-                                      (string-match-p (concat "\\`" back-button-smartrep-prefix "\\>") x))
-                                  (symbol-value (intern (concat (symbol-name cmd) "-keystrokes")))))
-          (push (cons (replace-regexp-in-string (concat "\\`" back-button-smartrep-prefix "\\>[ \t]*") "" k) cmd) keys)))
-      (smartrep-define-key back-button-mode-map back-button-smartrep-prefix keys))
-  ;; else
+(let ((smart-keys nil))
   (dolist (cmd back-button-commands)
     (dolist (k (symbol-value (intern (concat (symbol-name cmd) "-keystrokes"))))
-      (define-key back-button-mode-map (read-kbd-macro k) cmd))))
+      (if (and (featurep 'smartrep)
+               (stringp back-button-smartrep-prefix)
+               (> (length back-button-smartrep-prefix) 0)
+               (string-match-p (concat "\\`" back-button-smartrep-prefix "\\>") k))
+          (push (cons (replace-regexp-in-string
+                       (concat "\\`" back-button-smartrep-prefix "\\>[ \t]*")
+                       ""
+                       k)
+                      cmd)
+                smart-keys)
+        ;; else
+        (define-key back-button-mode-map (read-kbd-macro k) cmd))))
+  (when smart-keys
+    (smartrep-define-key back-button-mode-map back-button-smartrep-prefix smart-keys)))
 
 ;;; toolbar
 
