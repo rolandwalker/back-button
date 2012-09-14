@@ -205,11 +205,8 @@
 
 ;;; requires
 
-;; for let*, decf, remove-if-not, callf, position
-(eval-when-compile
-  (defvar visible-mark-mode)
-  (defvar visible-mark-overlays)
-  (require 'cl))
+;; for decf, callf, position
+(require 'cl)
 
 (require 'smartrep     nil t)
 (require 'nav-flash    nil t)
@@ -222,8 +219,11 @@
 (declare-function visible-mark-initialize-faces     "visible-mark.el")
 (declare-function visible-mark-move-overlays        "visible-mark.el")
 (declare-function back-button-push-mark             "back-button.el")
-(declare-function remove-if-not                     "cl-seq.el")
-(declare-function position                          "cl-seq.el")
+
+(eval-when-compile
+  ;; declarations for byte compiler
+  (defvar visible-mark-mode)
+  (defvar visible-mark-overlays))
 
 ;;; customizable variables
 
