@@ -855,7 +855,7 @@ an exact duplicate of the current topmost mark onto `global-mark-ring'."
 ;; mangle-whitespace: t
 ;; require-final-newline: t
 ;; coding: utf-8
-;; byte-compile-warnings: (not cl-functions)
+;; byte-compile-warnings: (not cl-functions redefine)
 ;; End:
 ;;
 ;; LocalWords:  BackButton smartrep NOMSG CONSECUTIVES fset nomsg
