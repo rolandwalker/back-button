@@ -24,7 +24,8 @@ PACKAGE_NAME=$(shell basename $(WORK_DIR))
 AUTOLOADS_FILE=$(PACKAGE_NAME)-loaddefs.el
 TEST_DIR=ert-tests
 TEST_DEP_1=ert
-TEST_DEP_1_URL=http://bzr.savannah.gnu.org/lh/emacs/emacs-24/download/head:/ert.el-20110112160650-056hnl9qhpjvjicy-2/ert.el
+TEST_DEP_1_STABLE_URL=http://bzr.savannah.gnu.org/lh/emacs/emacs-24/download/head:/ert.el-20110112160650-056hnl9qhpjvjicy-2/ert.el
+TEST_DEP_1_LATEST_URL=https://raw.github.com/emacsmirror/emacs/master/lisp/emacs-lisp/ert.el
 
 build :
 	$(EMACS) $(EMACS_BATCH) --eval             \
@@ -38,7 +39,10 @@ test-dep-1 :
 	(echo "Can't load test dependency $(TEST_DEP_1).el, run 'make downloads' to fetch it" ; exit 1)
 
 downloads :
-	$(CURL) '$(TEST_DEP_1_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_1_STABLE_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+
+downloads-latest :
+	$(CURL) '$(TEST_DEP_1_LATEST_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
 
 autoloads :
 	$(EMACS) $(EMACS_BATCH) --eval                       \
