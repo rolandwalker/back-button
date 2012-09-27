@@ -1,5 +1,7 @@
+[![Build Status](https://secure.travis-ci.org/rolandwalker/back-button.png)](http://travis-ci.org/rolandwalker/back-button)
+
 Overview
-===========
+========
 
 Visual navigation through mark rings in Emacs.
 
