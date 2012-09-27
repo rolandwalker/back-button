@@ -10,7 +10,7 @@ Visual navigation through mark rings in Emacs.
 Quickstart
 ----------
 
-```emacs-lisp
+```lisp
 (require 'back-button)
 (back-button-mode 1)
 ;; press the plus sign in the toolbar to create a mark
