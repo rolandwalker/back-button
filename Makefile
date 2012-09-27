@@ -10,6 +10,7 @@ EMACS_FLAGS=-Q --batch
 TESTS=
 
 CURL=curl
+EDITOR=runemacs -no_wait
 WORK_DIR=$(shell pwd)
 AUTOLOADS_FILE=$(shell basename `pwd`)-loaddefs.el
 TEST_DIR=ert-tests
@@ -50,3 +51,6 @@ test : build test-dep-1 test-autoloads
 
 clean :
 	@rm -f $(AUTOLOADS_FILE) *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_DEP_1).el
+
+edit :
+	@$(EDITOR) `git ls-files`
