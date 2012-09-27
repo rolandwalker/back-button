@@ -436,6 +436,8 @@ The format for key sequences is as defined by `kbd'."
 
 (when back-button-show-toolbar-buttons
 
+  (require 'tool-bar)
+
   (define-key-after tool-bar-map [separator-backb] menu-bar-separator)
 
   (tool-bar-add-item "left-arrow"
