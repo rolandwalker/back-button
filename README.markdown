@@ -12,13 +12,13 @@ Quickstart
 
 ```lisp
 (require 'back-button)
-
+ 
 (back-button-mode 1)
-
+ 
 ;; press the plus sign in the toolbar to create a mark
-
+ 
 ;; press the arrows in the toolbar to navigate marks
-
+ 
 ;; or use C-x C-Space as usual
 ```
 
