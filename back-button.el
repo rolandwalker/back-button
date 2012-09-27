@@ -517,6 +517,149 @@ in GNU Emacs 24.1 or higher."
 ;;      ... do something that pushes the mark...)
 (fset 'back-button-push-mark (symbol-function 'push-mark))
 
+;;; Lisp interface
+
+;; this function can replace push-mark in many circumstances
+;; todo make handling of duplicates consistent btw local and global
+
+;;;###autoload
+(defun back-button-push-mark-local-and-global (&optional location nomsg activate consecutives)
+  "Push mark at LOCATION, and unconditionally add to `global-mark-ring'.
+
+This function differs from `push-mark' in that `global-mark-ring'
+is always updated.
+
+LOCATION is optional, and defaults to the current point.
+
+NOMSG and ACTIVATE are as documented at `push-mark'.
+
+When CONSECUTIVES is set to 'limit and the new mark is in the same
+buffer as the first entry in `global-mark-ring', the first entry
+in `global-mark-ring' will be replaced.  Otherwise, a new entry
+is pushed onto `global-mark-ring'.
+
+When CONSECUTIVES is set to 'allow-dupes, it is possible to push
+an exact duplicate of the current topmost mark onto `global-mark-ring'."
+  (interactive)
+  (callf or location (point))
+  (back-button-push-mark location nomsg activate)
+  (when (or (eq consecutives 'allow-dupes)
+            (not (equal (mark-marker)
+                        (car global-mark-ring))))
+    (when (and (eq consecutives 'limit)
+               (eq (marker-buffer (car global-mark-ring)) (current-buffer)))
+      (move-marker (car global-mark-ring) nil)
+      (pop global-mark-ring))
+    (push (copy-marker (mark-marker)) global-mark-ring)
+    (when (> (length global-mark-ring) global-mark-ring-max)
+      (move-marker (car (nthcdr global-mark-ring-max global-mark-ring)) nil)
+      (setcdr (nthcdr (1- global-mark-ring-max) global-mark-ring) nil))))
+
+;;; utility functions
+
+(defun back-button-pre-command-hook ()
+  "Re-enable toolbar buttons and hide visible marks."
+  (when (and (featurep 'visible-mark)
+             (not visible-mark-mode))
+    (dolist (buf (buffer-list))
+      (with-current-buffer buf
+        (when visible-mark-overlays
+          (mapc 'delete-overlay visible-mark-overlays)
+          (setq visible-mark-overlays nil)))))
+  (setq back-button-global-disable-direction nil))
+
+(defun back-button-visible-mark-show (type)
+  "Show marks temporarily using `visible-mark'.
+
+TYPE may be 'global or 'local."
+  (when (and (featurep 'visible-mark)
+             (not visible-mark-mode))
+    (dolist (win (window-list))
+      (with-current-buffer (window-buffer win)
+        (when (not (minibufferp (current-buffer)))
+          (let ((visible-mark-max (length mark-ring)))
+            (visible-mark-initialize-overlays)
+            (visible-mark-initialize-faces)
+            (let ((mark-ring mark-ring))
+              (when (eq type 'global)
+                (setq mark-ring global-mark-ring))
+              (visible-mark-move-overlays))))))))
+
+(defun back-button-find-position (thumb type)
+  "Find the position of THUMB in the mark ring.
+
+TYPE may be 'global or 'local."
+  (let ((ring global-mark-ring)
+        (copy back-button-global-marks-copy)
+        (posn nil))
+    (when (eq type 'local)
+      (setq ring mark-ring)
+      (setq copy back-button-local-marks-copy))
+    (setq posn (or (position thumb copy) 1))
+    ;; scan across duplicates and place visible thumb
+    ;; on a consistent boundary; looks more intuitive
+    (while (and (> posn 0)
+                (equal (nth (1- posn) copy) (nth posn copy)))
+      (setq posn (1- posn)))
+    posn))
+
+(defun back-button-display-index (msg)
+  "Briefly display MSG.
+
+MSG is expected to contain a visual representation of mark-ring
+traversal progress."
+  (let ((message-log-max nil))
+    (cond
+      ((and (eq back-button-show-index 'echo)
+            (numberp back-button-index-timeout)
+            (> back-button-index-timeout 0))
+       (with-temp-message msg
+         (sit-for back-button-index-timeout)))
+    ((eq back-button-show-index 'echo)
+     (message msg))
+    ((and (eq back-button-show-index 'popup)
+          (fboundp 'popup-volatile))
+     (popup-volatile msg :box t :around t :delay back-button-index-timeout :face '(:background "Gray20" :foreground "#C0C0C0"))))))
+
+(defun back-button-maybe-record-start (type interactive)
+  "Push mark for the first of a series of interactive back-button commands.
+
+TYPE may be 'local or 'global.
+
+INTERACTIVE is a boolean value, noting whether this function was
+called from an interactive command."
+  (when (and interactive
+             (not (memq last-command back-button-commands))
+             (not back-button-never-push-mark))
+    (cond
+      ((eq type 'global)
+       (back-button-push-mark-local-and-global (point) t nil))
+      ((eq type 'local)
+       ;; push twice to get position onto mark-ring
+       (back-button-push-mark (point) t nil)
+       (back-button-push-mark (point) t nil)))))
+
+;; This totally different approach (compared to pop-mark) is needed in
+;; the first case b/c pop-mark creates/destroys markers, breaking the
+;; memq tests used in back-button-local and back-button-find-index.
+(defun back-button-pop-local-mark ()
+  "Pop off local `mark-ring' and jump to the top location.
+
+This differs from `pop-mark' completely, instead following the
+semantics of `pop-global-mark', moving the point instead of
+setting the mark."
+  (when mark-ring
+    (let* ((marker (car mark-ring))
+           (position (marker-position marker)))
+    (setq mark-ring (nconc (cdr mark-ring)
+                           (list (car mark-ring))))
+    (when (and (>= position (point-min))
+               (<= position (point-max)))
+      (if widen-automatically
+          (widen)
+        (error "Local mark position is outside accessible part of buffer")))
+    (goto-char position))))
+
 ;;; minor-mode setup
 
 ;;;###autoload
@@ -545,54 +688,6 @@ is 'toggle."
       (message "back-button mode disabled")))))
 
 ;;; interactive commands
-
-;;;###autoload
-(defun back-button-local-backward ()
-  "Run `back-button-local' in the backward direction.
-
-Unlike `back-button-local', ignores any prefix argument.
-
-This command is somewhat like a fancier version of
-`pop-to-mark-command', though it leaves the mark and
-`mark-ring' in a different state."
-  (interactive)
-  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
-  (back-button-local nil))
-
-;;;###autoload
-(defun back-button-local-forward ()
-  "Run `back-button-local' in the forward direction.
-
-Unlike `back-button-local', ignores any prefix argument.
-
-This command is somewhat like the reverse of
-`pop-to-mark-command'."
-  (interactive)
-  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
-  (back-button-local '(4)))
-
-;;;###autoload
-(defun back-button-global-backward ()
-  "Run `back-button-global' in the backward direction.
-
-Unlike `back-button-global', ignores any prefix argument.
-
-This command is much like a fancier version of
-`pop-global-mark'."
-  (interactive)
-  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
-  (back-button-global nil))
-
-;;;###autoload
-(defun back-button-global-forward ()
-  "Run `back-button-global' in the forward direction.
-
-Unlike `back-button-global', ignores any prefix argument.
-
-This command is much like the reverse of `pop-global-mark'."
-  (interactive)
-  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
-  (back-button-global '(4)))
 
 ;;;###autoload
 (defun back-button-local (arg)
@@ -703,147 +798,53 @@ web browser back-button.)"
                                        (string back-button-thumb-char)
                                        (make-string posn back-button-spacer-char)))))
 
+;;;###autoload
+(defun back-button-local-backward ()
+  "Run `back-button-local' in the backward direction.
 
-;;; utility functions
+Unlike `back-button-local', ignores any prefix argument.
 
-(defun back-button-pre-command-hook ()
-  "Re-enable toolbar buttons and hide visible marks."
-  (when (and (featurep 'visible-mark)
-             (not visible-mark-mode))
-    (dolist (buf (buffer-list))
-      (with-current-buffer buf
-        (when visible-mark-overlays
-          (mapc 'delete-overlay visible-mark-overlays)
-          (setq visible-mark-overlays nil)))))
-  (setq back-button-global-disable-direction nil))
-
-(defun back-button-visible-mark-show (type)
-  "Show marks temporarily using `visible-mark'.
-
-TYPE may be 'global or 'local."
-  (when (and (featurep 'visible-mark)
-             (not visible-mark-mode))
-    (dolist (win (window-list))
-      (with-current-buffer (window-buffer win)
-        (when (not (minibufferp (current-buffer)))
-          (let ((visible-mark-max (length mark-ring)))
-            (visible-mark-initialize-overlays)
-            (visible-mark-initialize-faces)
-            (let ((mark-ring mark-ring))
-              (when (eq type 'global)
-                (setq mark-ring global-mark-ring))
-              (visible-mark-move-overlays))))))))
-
-(defun back-button-find-position (thumb type)
-  "Find the position of THUMB in the mark ring.
-
-TYPE may be 'global or 'local."
-  (let ((ring global-mark-ring)
-        (copy back-button-global-marks-copy)
-        (posn nil))
-    (when (eq type 'local)
-      (setq ring mark-ring)
-      (setq copy back-button-local-marks-copy))
-    (setq posn (or (position thumb copy) 1))
-    ;; scan across duplicates and place visible thumb
-    ;; on a consistent boundary; looks more intuitive
-    (while (and (> posn 0)
-                (equal (nth (1- posn) copy) (nth posn copy)))
-      (setq posn (1- posn)))
-    posn))
-
-(defun back-button-display-index (msg)
-  "Briefly display MSG.
-
-MSG is expected to contain a visual representation of mark-ring
-traversal progress."
-  (let ((message-log-max nil))
-    (cond
-      ((and (eq back-button-show-index 'echo)
-            (numberp back-button-index-timeout)
-            (> back-button-index-timeout 0))
-       (with-temp-message msg
-         (sit-for back-button-index-timeout)))
-    ((eq back-button-show-index 'echo)
-     (message msg))
-    ((and (eq back-button-show-index 'popup)
-          (fboundp 'popup-volatile))
-     (popup-volatile msg :box t :around t :delay back-button-index-timeout :face '(:background "Gray20" :foreground "#C0C0C0"))))))
-
-(defun back-button-maybe-record-start (type interactive)
-  "Push mark for the first of a series of interactive back-button commands.
-
-TYPE may be 'local or 'global.
-
-INTERACTIVE is a boolean value, noting whether this function was
-called from an interactive command."
-  (when (and interactive
-             (not (memq last-command back-button-commands))
-             (not back-button-never-push-mark))
-    (cond
-      ((eq type 'global)
-       (back-button-push-mark-local-and-global (point) t nil))
-      ((eq type 'local)
-       ;; push twice to get position onto mark-ring
-       (back-button-push-mark (point) t nil)
-       (back-button-push-mark (point) t nil)))))
-
-;; This totally different approach (compared to pop-mark) is needed in
-;; the first case b/c pop-mark creates/destroys markers, breaking the
-;; memq tests used in back-button-local and back-button-find-index.
-(defun back-button-pop-local-mark ()
-  "Pop off local `mark-ring' and jump to the top location.
-
-This differs from `pop-mark' completely, instead following the
-semantics of `pop-global-mark', moving the point instead of
-setting the mark."
-  (when mark-ring
-    (let* ((marker (car mark-ring))
-           (position (marker-position marker)))
-    (setq mark-ring (nconc (cdr mark-ring)
-                           (list (car mark-ring))))
-    (when (and (>= position (point-min))
-               (<= position (point-max)))
-      (if widen-automatically
-          (widen)
-        (error "Local mark position is outside accessible part of buffer")))
-    (goto-char position))))
-
-;; this function can replace push-mark in many circumstances
-;; todo make handling of duplicates consistent btw local and global
+This command is somewhat like a fancier version of
+`pop-to-mark-command', though it leaves the mark and
+`mark-ring' in a different state."
+  (interactive)
+  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
+  (back-button-local nil))
 
 ;;;###autoload
-(defun back-button-push-mark-local-and-global (&optional location nomsg activate consecutives)
-  "Push mark at LOCATION, and unconditionally add to `global-mark-ring'.
+(defun back-button-local-forward ()
+  "Run `back-button-local' in the forward direction.
 
-This function differs from `push-mark' in that `global-mark-ring'
-is always updated.
+Unlike `back-button-local', ignores any prefix argument.
 
-LOCATION is optional, and defaults to the current point.
-
-NOMSG and ACTIVATE are as documented at `push-mark'.
-
-When CONSECUTIVES is set to 'limit and the new mark is in the same
-buffer as the first entry in `global-mark-ring', the first entry
-in `global-mark-ring' will be replaced.  Otherwise, a new entry
-is pushed onto `global-mark-ring'.
-
-When CONSECUTIVES is set to 'allow-dupes, it is possible to push
-an exact duplicate of the current topmost mark onto `global-mark-ring'."
+This command is somewhat like the reverse of
+`pop-to-mark-command'."
   (interactive)
-  (callf or location (point))
-  (back-button-push-mark location nomsg activate)
-  (when (or (eq consecutives 'allow-dupes)
-            (not (equal (mark-marker)
-                        (car global-mark-ring))))
-    (when (and (eq consecutives 'limit)
-               (eq (marker-buffer (car global-mark-ring)) (current-buffer)))
-      (move-marker (car global-mark-ring) nil)
-      (pop global-mark-ring))
-    (push (copy-marker (mark-marker)) global-mark-ring)
-    (when (> (length global-mark-ring) global-mark-ring-max)
-      (move-marker (car (nthcdr global-mark-ring-max global-mark-ring)) nil)
-      (setcdr (nthcdr (1- global-mark-ring-max) global-mark-ring) nil))))
+  (back-button-maybe-record-start 'local (back-button-called-interactively-p 'any))
+  (back-button-local '(4)))
+
+;;;###autoload
+(defun back-button-global-backward ()
+  "Run `back-button-global' in the backward direction.
+
+Unlike `back-button-global', ignores any prefix argument.
+
+This command is much like a fancier version of
+`pop-global-mark'."
+  (interactive)
+  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
+  (back-button-global nil))
+
+;;;###autoload
+(defun back-button-global-forward ()
+  "Run `back-button-global' in the forward direction.
+
+Unlike `back-button-global', ignores any prefix argument.
+
+This command is much like the reverse of `pop-global-mark'."
+  (interactive)
+  (back-button-maybe-record-start 'global (back-button-called-interactively-p 'any))
+  (back-button-global '(4)))
 
 (provide 'back-button)
 
