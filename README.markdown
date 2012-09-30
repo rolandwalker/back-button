@@ -92,7 +92,10 @@ buffer.  However, no such issues have been observed.
 Compatibility and Requirements
 ------------------------------
 
-Tested on GNU Emacs versions 23.3 and 24.1
+	GNU Emacs version 24.3-devel     : yes, at the time of writing
+	GNU Emacs version 24.1 & 24.2    : yes
+	GNU Emacs version 23.3           : yes
+	GNU Emacs version 22.3 and lower : no
 
 Uses if present: [smartrep.el](http://github.com/myuhe/smartrep.el), [nav-flash.el](http://github.com/rolandwalker/nav-flash), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el),
 [ucs-utils.el](http://github.com/rolandwalker/ucs-utils), [unicode-fonts.el](http://github.com/rolandwalker/unicode-fonts)
