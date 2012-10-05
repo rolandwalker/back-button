@@ -43,15 +43,15 @@ build :
 	      (batch-byte-compile))" *.el
 
 test-dep-1 :
-	@cd $(TEST_DIR)                                               && \
-	$(RESOLVED_EMACS) $(EMACS_BATCH)  -L . -L .. -l $(TEST_DEP_1) || \
+	@cd '$(TEST_DIR)'                                               && \
+	$(RESOLVED_EMACS) $(EMACS_BATCH)  -L . -L .. -l '$(TEST_DEP_1)' || \
 	(echo "Can't load test dependency $(TEST_DEP_1).el, run 'make downloads' to fetch it" ; exit 1)
 
 downloads :
-	$(CURL) '$(TEST_DEP_1_STABLE_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_1_STABLE_URL)' > '$(TEST_DIR)/$(TEST_DEP_1).el'
 
 downloads-latest :
-	$(CURL) '$(TEST_DEP_1_LATEST_URL)' > $(TEST_DIR)/$(TEST_DEP_1).el
+	$(CURL) '$(TEST_DEP_1_LATEST_URL)' > '$(TEST_DIR)/$(TEST_DEP_1).el'
 
 autoloads :
 	$(RESOLVED_EMACS) $(EMACS_BATCH) --eval              \
@@ -60,29 +60,29 @@ autoloads :
 	      (update-directory-autoloads \"$(WORK_DIR)\"))"
 
 test-autoloads : autoloads
-	@$(RESOLVED_EMACS) $(EMACS_BATCH) -L . -l "./$(AUTOLOADS_FILE)" || \
+	@$(RESOLVED_EMACS) $(EMACS_BATCH) -L . -l './$(AUTOLOADS_FILE)' || \
 	 ( echo "failed to load autoloads: $(AUTOLOADS_FILE)" && false )
 
 test-travis :
-	@if test -z "$$TRAVIS" && test -e $(TRAVIS_FILE); then travis-lint $(TRAVIS_FILE); fi
+	@if test -z "$$TRAVIS" && test -e '$(TRAVIS_FILE)'; then travis-lint '$(TRAVIS_FILE)'; fi
 
 test-tests :
-	@perl -ne 'if (m/^\s*\(\s*ert-deftest\s*(\S+)/) {die "$$1 test name duplicated in $$ARGV\n" if $$dupes{$$1}++}' $(TEST_DIR)/*-test.el
+	@perl -ne 'if (m/^\s*\(\s*ert-deftest\s*(\S+)/) {die "$$1 test name duplicated in $$ARGV\n" if $$dupes{$$1}++}' '$(TEST_DIR)/'*-test.el
 
 test-prep : build test-dep-1 test-autoloads test-travis test-tests
 
 test-batch :
-	@cd $(TEST_DIR)                                   && \
+	@cd '$(TEST_DIR)'                                 && \
 	(for test_lib in *-test.el; do                       \
 	   $(RESOLVED_EMACS) $(EMACS_BATCH) -L . -L .. -l cl \
-	   -l $(TEST_DEP_1) -l $$test_lib --eval             \
+	   -l '$(TEST_DEP_1)' -l "$$test_lib" --eval         \
 	    "(flet ((ert--print-backtrace (&rest args)       \
 	      (insert \"no backtrace in batch mode\")))      \
 	       (ert-run-tests-batch-and-exit '(and \"$(TESTS)\" (not (tag :interactive)))))" || exit 1; \
 	done)
 
 test-interactive : test-prep
-	@cd $(TEST_DIR)                                               && \
+	@cd '$(TEST_DIR)'                                             && \
 	(for test_lib in *-test.el; do                                   \
 	    $(RESOLVED_INTERACTIVE_EMACS) $(EMACS_CLEAN) --eval          \
 	    "(progn                                                      \
@@ -90,8 +90,8 @@ test-interactive : test-prep
 	      (setq dired-use-ls-dired nil)                              \
 	      (setq frame-title-format \"TEST SESSION $$test_lib\")      \
 	      (setq enable-local-variables :safe))"                      \
-	    -L . -L .. -l cl -l $(TEST_DEP_1) -l $$test_lib              \
-	    --visit $$test_lib --eval                                    \
+	    -L . -L .. -l cl -l '$(TEST_DEP_1)' -l "$$test_lib"          \
+	    --visit "$$test_lib" --eval                                  \
 	    "(progn                                                      \
 	      (when (> (length \"$(TESTS)\") 0)                          \
 	       (push \"\\\"$(TESTS)\\\"\" ert--selector-history))        \
@@ -108,7 +108,7 @@ test-interactive : test-prep
 test : test-prep test-batch
 
 run-pristine :
-	@cd $(TEST_DIR)                                                && \
+	@cd '$(TEST_DIR)'                                              && \
 	$(RESOLVED_EMACS) $(EMACS_CLEAN) --eval                           \
 	 "(progn                                                          \
 	   (setq package-enable-at-startup nil)                           \
@@ -119,20 +119,20 @@ run-pristine :
 	   (setq dired-use-ls-dired nil)                                  \
 	   (setq frame-title-format \"PRISTINE SESSION $(PACKAGE_NAME)\") \
 	   (setq enable-local-variables :safe))"                          \
-	 -L .. -l $(PACKAGE_NAME) .
+	 -L .. -l '$(PACKAGE_NAME)' .
 
 run-pristine-local :
-	@cd $(TEST_DIR)                                                && \
+	@cd '$(TEST_DIR)'                                              && \
 	$(RESOLVED_EMACS) $(EMACS_CLEAN) --eval                           \
 	 "(progn                                                          \
 	   (cd \"$(WORK_DIR)/$(TEST_DIR)\")                               \
 	   (setq dired-use-ls-dired nil)                                  \
 	   (setq frame-title-format \"PRISTINE-LOCAL SESSION $(PACKAGE_NAME)\") \
 	   (setq enable-local-variables :safe))"                          \
-	 -L . -L .. -l $(PACKAGE_NAME) .
+	 -L . -L .. -l '$(PACKAGE_NAME)' .
 
 clean :
-	@rm -f $(AUTOLOADS_FILE) *.elc *~ */*.elc */*~ $(TEST_DIR)/$(TEST_DEP_1).el
+	@rm -f '$(AUTOLOADS_FILE)' *.elc *~ */*.elc */*~ '$(TEST_DIR)/$(TEST_DEP_1).el'
 
 edit :
 	@$(EDITOR) `git ls-files`
