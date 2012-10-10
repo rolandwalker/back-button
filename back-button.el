@@ -413,6 +413,12 @@ The format for key sequences is as defined by `kbd'."
   (setq back-button-spacer-char (ucs-utils-char back-button-index-spacer-ucs-name back-button-spacer-char 'cdp))
   (setq back-button-thumb-char  (ucs-utils-char back-button-index-thumb-ucs-name  back-button-thumb-char  'cdp)))
 
+(defvar back-button-lighter-menu-mouse-button 3
+  "Which mouse button invokes the modeline context menu.")
+
+(defvar back-button-lighter-keymap-property 'keymap
+  "Which property sets the lighter keymap")
+
 ;;; keymaps
 
 (defvar back-button-mode-map (make-sparse-keymap) "Keymap for `back-button-mode' minor-mode.")
@@ -483,8 +489,6 @@ The format for key sequences is as defined by `kbd'."
                                    (define-key menu-map [back]                        '(menu-item "Back"           back-button-global-backward))
                                    (define-key menu-map [separator-1]                 '(menu-item "--"))
                                    (define-key menu-map [turn-off-back-button-mode]   '(menu-item "Turn Off Back Button Mode"  back-button-mode))
-                                   (define-key map (kbd "<mode-line> <mouse-1>"      ) 'ignore)
-                                   (define-key map (kbd "<mode-line> <mouse-2>"      ) 'ignore)
                                    (define-key map (kbd "<mode-line> <wheel-up>"     ) 'back-button-global-backward)
                                    (define-key map (kbd "<mode-line> <wheel-down>"   ) 'back-button-global-forward)
                                    (define-key map (kbd "<mode-line> <C-wheel-up>"   ) 'back-button-local-backward)
@@ -493,12 +497,12 @@ The format for key sequences is as defined by `kbd'."
                                    (define-key map (kbd "<mode-line> <mouse-5>"      ) 'back-button-global-forward)
                                    (define-key map (kbd "<mode-line> <C-mouse-4>"    ) 'back-button-local-backward)
                                    (define-key map (kbd "<mode-line> <C-mouse-5>"    ) 'back-button-local-forward)
-                                   (define-key map (kbd "<mode-line> <down-mouse-3>" )  menu-map)
+                                   (define-key map (read-kbd-macro (format "<mode-line> <down-mouse-%s>" back-button-lighter-menu-mouse-button)) menu-map)
                                    map) "Keymap for the back-button lighter.")
 
-(callf propertize back-button-mode-lighter 'local-map back-button-lighter-map
-                                           'keymap back-button-lighter-map
-                                           'help-echo "Back-button: mouse-wheel and control-mouse-wheel to navigate")
+(callf propertize back-button-mode-lighter
+                  back-button-lighter-keymap-property back-button-lighter-map
+                  'help-echo (format "Back-button: mouse-%s menu\nmouse-wheel and control-mouse-wheel to navigate" back-button-lighter-menu-mouse-button))
 
 ;;; macros
 
