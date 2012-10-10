@@ -133,7 +133,10 @@ run-pristine-local :
 	 -L . -L .. -l '$(PACKAGE_NAME)' .
 
 clean :
-	@rm -f '$(AUTOLOADS_FILE)' *.elc *~ */*.elc */*~ '$(TEST_DIR)/$(TEST_DEP_1).el'
+	@rm -f '$(AUTOLOADS_FILE)' *.elc *~ */*.elc */*~  && \
+	cd '$(TEST_DIR)'                                  && \
+	rm -f './$(TEST_DEP_1).el' './$(TEST_DEP_2).el' './$(TEST_DEP_3).el' './$(TEST_DEP_4).el' './$(TEST_DEP_4a).el' \
+	      './$(TEST_DEP_5).el' './$(TEST_DEP_6).el' './$(TEST_DEP_7).el' './$(TEST_DEP_8).el' './$(TEST_DEP_9).el'
 
 edit :
 	@$(EDITOR) `git ls-files`
