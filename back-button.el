@@ -413,7 +413,7 @@ The format for key sequences is as defined by `kbd'."
   (setq back-button-spacer-char (ucs-utils-char back-button-index-spacer-ucs-name back-button-spacer-char 'cdp))
   (setq back-button-thumb-char  (ucs-utils-char back-button-index-thumb-ucs-name  back-button-thumb-char  'cdp)))
 
-(defvar back-button-lighter-menu-mouse-button 3
+(defvar back-button-lighter-menu-mouse-button 1
   "Which mouse button invokes the modeline context menu.")
 
 (defvar back-button-lighter-keymap-property 'keymap
@@ -500,9 +500,11 @@ The format for key sequences is as defined by `kbd'."
                                    (define-key map (read-kbd-macro (format "<mode-line> <down-mouse-%s>" back-button-lighter-menu-mouse-button)) menu-map)
                                    map) "Keymap for the back-button lighter.")
 
-(callf propertize back-button-mode-lighter
-                  back-button-lighter-keymap-property back-button-lighter-map
-                  'help-echo (format "Back-button: mouse-%s menu\nmouse-wheel and control-mouse-wheel to navigate" back-button-lighter-menu-mouse-button))
+(when (and (stringp back-button-mode-lighter)
+           (> (length back-button-mode-lighter) 0))
+  (callf propertize back-button-mode-lighter
+                    back-button-lighter-keymap-property back-button-lighter-map
+                    'help-echo (format "Back-button: mouse-%s menu\nmouse-wheel and control-mouse-wheel to navigate" back-button-lighter-menu-mouse-button)))
 
 ;;; macros
 
