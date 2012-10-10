@@ -5,6 +5,32 @@
 
 ;;; this is a stub - no tests defined
 
+;;; back-button-push-mark-local-and-global (&optional location nomsg activate consecutives)
+
+;;; back-button-pre-command-hook ()
+
+;;; back-button-visible-mark-show (type)
+
+;;; back-button-find-position (thumb type)
+
+;;; back-button-display-index (msg)
+
+;;; back-button-maybe-record-start (type interactive)
+
+;;; back-button-pop-local-mark ()
+
+;;; back-button-local (arg)
+
+;;; back-button-global (arg)
+
+;;; back-button-local-backward ()
+
+;;; back-button-local-forward ()
+
+;;; back-button-global-backward ()
+
+;;; back-button-global-forward ()
+
 ;;
 ;; Emacs
 ;;
