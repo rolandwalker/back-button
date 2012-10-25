@@ -5,6 +5,8 @@ Overview
 
 Visual navigation through mark rings in Emacs.
 
+Two-way movement within the ring is supported.
+
 ![back-button example](https://raw.github.com/rolandwalker/back-button/master/back_button_example.png)
 
 Quickstart
@@ -19,10 +21,11 @@ Quickstart
  
 ;; press the arrows in the toolbar to navigate marks
  
-;; or use C-x C-Space as usual
+;; or use C-x C-Space as usual, then try C-x C-<right>
+;; to reverse the operation
 ```
 
-back-button
+Explanation
 -----------
 
 Back-button provides an alternative method for navigation by
@@ -54,7 +57,7 @@ consistency in navigation comes at the cost of pushing the mark
 twice, so experienced Emacs users may prefer to unbind these
 commands and/or set `back-button-never-push-mark` in customize.
 
-When the visible-marks package is installed, marks will be
+When the [visible-mark](http://www.emacswiki.org/emacs/visible-mark.el) package is installed, marks will be
 made visible in the current buffer during navigation.
 
 Default key bindings
@@ -68,7 +71,7 @@ Default key bindings
 	C-x <left>     go back in (buffer-local) `mark-ring`  
 	C-x <right>    go forward in (buffer-local) `mark-ring`  
 
-When the `smartrep` package is installed, the `C-x` prefix need
+When the [smartrep](http://github.com/myuhe/smartrep.el) package is installed, the `C-x` prefix need
 not be used for consecutive `back-button` commands.
 
 Notes

@@ -25,7 +25,8 @@
 ;;
 ;;     press the arrows in the toolbar to navigate marks
 ;;
-;;     or use C-x C-Space as usual
+;;     or use C-x C-Space as usual, then try C-x C-<right>
+;;     to reverse the operation
 ;;
 ;; Explanation
 ;;
@@ -77,7 +78,7 @@
 ;; When the smartrep package is installed, the C-x prefix need not
 ;; be used for consecutive back-button commands.
 ;;
-;; When the visible-marks package is installed, marks will be
+;; When the visible-mark package is installed, marks will be
 ;; made visible in the current buffer during navigation.
 ;;
 ;; See Also
@@ -868,8 +869,8 @@ This command is much like the reverse of `pop-global-mark'."
 ;; byte-compile-warnings: (not cl-functions redefine)
 ;; End:
 ;;
-;; LocalWords:  BackButton smartrep NOMSG CONSECUTIVES fset nomsg
-;; LocalWords:  callf imenu
+;; LocalWords: BackButton smartrep NOMSG CONSECUTIVES fset nomsg
+;; LocalWords: callf imenu utils pcache devel flet
 ;;
 
 ;;; back-button.el ends here
