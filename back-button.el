@@ -207,7 +207,7 @@
 ;;; Code:
 ;;
 
-;;; requires
+;;; requirements
 
 ;; for decf, callf, position
 (require 'cl)
@@ -217,6 +217,8 @@
 (require 'visible-mark nil t)
 (require 'ucs-utils    nil t)
 
+;;; declarations
+
 (declare-function ucs-utils-char                    "ucs-utils.el")
 (declare-function smartrep-define-key               "smartrep.el")
 (declare-function visible-mark-initialize-overlays  "visible-mark.el")
@@ -225,7 +227,6 @@
 (declare-function back-button-push-mark             "back-button.el")
 
 (eval-when-compile
-  ;; declarations for byte compiler
   (defvar visible-mark-mode)
   (defvar visible-mark-overlays))
 
