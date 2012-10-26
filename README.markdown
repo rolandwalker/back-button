@@ -1,4 +1,4 @@
-[![Build Status](https://secure.travis-ci.org/rolandwalker/back-button.png)](http://travis-ci.org/rolandwalker/back-button)
+[![Build Status](https://secure.travis-ci.org/rolandwalker/back-button.png?branch=master)](http://travis-ci.org/rolandwalker/back-button)
 
 Overview
 ========
