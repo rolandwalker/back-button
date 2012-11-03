@@ -487,7 +487,8 @@ The format for key sequences is as defined by `kbd'."
 (defvar back-button-lighter-map  (let ((map (make-sparse-keymap))
                                        (menu-map (make-sparse-keymap "Back Button")))
                                    (define-key menu-map [customize]                   '(menu-item "Customize"      (lambda (e) (interactive "e") (customize-group 'back-button))))
-                                   (define-key menu-map [separator-2]                 '(menu-item "--"))
+                                   (define-key menu-map [turn-off-back-button-mode]   '(menu-item "Turn Off Back Button Mode"  back-button-mode))
+                                   (define-key menu-map [separator-1]                 '(menu-item "--"))
                                    (define-key menu-map [local-forward]               (append '(menu-item "Local Forward" back-button-local-forward)
                                                                                               ;; force advertised binding because of smartrep
                                                                                               (when (get 'back-button-local-forward :advertised-binding)
@@ -509,8 +510,6 @@ The format for key sequences is as defined by `kbd'."
                                                                                                 (list :keys
                                                                                                       (format-kbd-macro
                                                                                                        (get 'back-button-global-backward :advertised-binding))))))
-                                   (define-key menu-map [separator-1]                 '(menu-item "--"))
-                                   (define-key menu-map [turn-off-back-button-mode]   '(menu-item "Turn Off Back Button Mode"  back-button-mode))
                                    (define-key map (kbd "<mode-line> <wheel-up>"     ) 'back-button-global-backward)
                                    (define-key map (kbd "<mode-line> <wheel-down>"   ) 'back-button-global-forward)
                                    (define-key map (kbd "<mode-line> <C-wheel-up>"   ) 'back-button-local-backward)
