@@ -428,6 +428,9 @@ The format for key sequences is as defined by `kbd'."
 (let ((smart-keys nil))
   (dolist (cmd back-button-commands)
     (dolist (k (symbol-value (intern (concat (symbol-name cmd) "-keystrokes"))))
+      (when (and (not (string-match-p "mouse\\|wheel\\|button" k))
+                 (not (get cmd :advertised-binding)))
+        (put cmd :advertised-binding (read-kbd-macro k)))
       (if (and (featurep 'smartrep)
                (stringp back-button-smartrep-prefix)
                (> (length back-button-smartrep-prefix) 0)
@@ -485,10 +488,27 @@ The format for key sequences is as defined by `kbd'."
                                        (menu-map (make-sparse-keymap "Back Button")))
                                    (define-key menu-map [customize]                   '(menu-item "Customize"      (lambda (e) (interactive "e") (customize-group 'back-button))))
                                    (define-key menu-map [separator-2]                 '(menu-item "--"))
-                                   (define-key menu-map [local-forward]               '(menu-item "Local Forward"  back-button-local-forward))
-                                   (define-key menu-map [local-back]                  '(menu-item "Local Back"     back-button-local-backward))
-                                   (define-key menu-map [forward]                     '(menu-item "Forward"        back-button-global-forward))
-                                   (define-key menu-map [back]                        '(menu-item "Back"           back-button-global-backward))
+                                   (define-key menu-map [local-forward]               (append '(menu-item "Local Forward" back-button-local-forward)
+                                                                                              ;; force advertised binding because of smartrep
+                                                                                              (when (get 'back-button-local-forward :advertised-binding)
+                                                                                                (list :keys
+                                                                                                      (format-kbd-macro
+                                                                                                       (get 'back-button-local-forward :advertised-binding))))))
+                                   (define-key menu-map [local-back]                  (append '(menu-item "Local Back" back-button-local-backward)
+                                                                                              (when (get 'back-button-local-backward :advertised-binding)
+                                                                                                (list :keys
+                                                                                                      (format-kbd-macro
+                                                                                                       (get 'back-button-local-backward :advertised-binding))))))
+                                   (define-key menu-map [forward]                     (append '(menu-item "Forward" back-button-global-forward)
+                                                                                              (when (get 'back-button-global-forward :advertised-binding)
+                                                                                                (list :keys
+                                                                                                      (format-kbd-macro
+                                                                                                       (get 'back-button-global-forward :advertised-binding))))))
+                                   (define-key menu-map [back]                        (append '(menu-item "Back" back-button-global-backward)
+                                                                                              (when (get 'back-button-global-backward :advertised-binding)
+                                                                                                (list :keys
+                                                                                                      (format-kbd-macro
+                                                                                                       (get 'back-button-global-backward :advertised-binding))))))
                                    (define-key menu-map [separator-1]                 '(menu-item "--"))
                                    (define-key menu-map [turn-off-back-button-mode]   '(menu-item "Turn Off Back Button Mode"  back-button-mode))
                                    (define-key map (kbd "<mode-line> <wheel-up>"     ) 'back-button-global-backward)
