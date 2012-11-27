@@ -335,8 +335,8 @@ Set to nil or the empty string to disable smartrep for
 
 The default binding overrides `pop-global-mark'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
@@ -345,8 +345,8 @@ The format for key sequences is as defined by `kbd'."
 (defcustom back-button-global-backward-keystrokes '("C-x <C-left>")
   "List of key sequences to invoke `back-button-global-backward'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
@@ -355,8 +355,8 @@ The format for key sequences is as defined by `kbd'."
 (defcustom back-button-global-forward-keystrokes '("C-x <C-right>")
   "List of key sequences to invoke `back-button-global-forward'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
@@ -365,8 +365,8 @@ The format for key sequences is as defined by `kbd'."
 (defcustom back-button-local-keystrokes '("C-x <SPC>")
   "List of key sequences to invoke `back-button-local'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
@@ -375,8 +375,8 @@ The format for key sequences is as defined by `kbd'."
 (defcustom back-button-local-backward-keystrokes '("C-x <left>")
   "List of key sequences to invoke `back-button-local-backward'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
@@ -385,8 +385,8 @@ The format for key sequences is as defined by `kbd'."
 (defcustom back-button-local-forward-keystrokes '("C-x <right>")
   "List of key sequences to invoke `back-button-local-forward'.
 
-The key bindings are effect when `back-button-mode' minor mode is
-active.
+The key bindings are in effect when `back-button-mode' minor mode
+is active.
 
 The format for key sequences is as defined by `kbd'."
   :type '(repeat string)
