@@ -82,10 +82,9 @@ provide useful waypoints for navigation.  This is a common
 convention, but not universal.
 
 The function `back-button-push-mark-local-and-global` may be
-useful to call from Lisp.  It is essentially a replacement for
-`push-mark` which unconditionally pushes onto the global mark
-ring, functionality which is not possible using vanilla
-`push-mark`.
+useful to call from Lisp.  It is a replacement for `push-mark`
+which unconditionally pushes onto the global mark ring,
+functionality which is not possible using vanilla `push-mark`.
 
 Theoretically, `back-button-push-mark-local-and-global` could
 cause issues with Lisp code which depends on the convention that
