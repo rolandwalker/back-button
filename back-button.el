@@ -235,7 +235,9 @@
 (defgroup back-button nil
   "Visual navigation through mark rings."
   :version "0.6.4"
-  :link '(emacs-commentary-link "back-button")
+  :link '(emacs-commentary-link :tag "Commentary" "back-button")
+  :link '(url-link :tag "Github" "http://github.com/rolandwalker/back-button")
+  :link '(url-link :tag "EmacsWiki" "http://emacswiki.org/emacs/BackButton")
   :prefix "back-button-"
   :group 'convenience
   :group 'navigation)
