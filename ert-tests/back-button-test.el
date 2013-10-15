@@ -31,6 +31,8 @@
 
 ;;; back-button-global-forward ()
 
+;;; back-button-mode
+
 ;;
 ;; Emacs
 ;;
