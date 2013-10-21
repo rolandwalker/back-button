@@ -97,7 +97,8 @@ Compatibility and Requirements
 	GNU Emacs version 24.4-devel     : yes, at the time of writing
 	GNU Emacs version 24.3           : yes
 	GNU Emacs version 23.3           : yes
-	GNU Emacs version 22.3 and lower : no
+	GNU Emacs version 22.2           : yes, with some limitations
+	GNU Emacs version 21.x and lower : unknown
 
 Uses if present: [smartrep.el](http://github.com/myuhe/smartrep.el), [nav-flash.el](http://github.com/rolandwalker/nav-flash), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el),
 [ucs-utils.el](http://github.com/rolandwalker/ucs-utils), [unicode-fonts.el](http://github.com/rolandwalker/unicode-fonts)
