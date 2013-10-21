@@ -422,6 +422,16 @@ The format for key sequences is as defined by `kbd'."
 (defvar back-button-lighter-keymap-property 'keymap
   "Which property sets the lighter keymap")
 
+
+;;; compatibility functions
+
+(unless (fboundp 'string-match-p)
+  ;; added in 23.x
+  (defun string-match-p (regexp string &optional start)
+    "Same as `string-match' except this function does not change the match data."
+    (let ((inhibit-changing-match-data t))
+      (string-match regexp string start))))
+
 ;;; keymaps
 
 (defvar back-button-mode-map (make-sparse-keymap) "Keymap for `back-button-mode' minor-mode.")
