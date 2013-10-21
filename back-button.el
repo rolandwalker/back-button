@@ -248,9 +248,8 @@
 Set to nil or the empty string to disable the mode-line
 lighter for `back-button-mode'."
   :type 'string
-  (when (>= emacs-major-version 23) :risky)
-  (when (>= emacs-major-version 23) t)
   :group 'back-button)
+(put 'back-button-mode-lighter 'risky-local-variable t)
 
 (defcustom back-button-less-feedback nil
   "Give less echo area feedback."
