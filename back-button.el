@@ -5,8 +5,8 @@
 ;; Author: Roland Walker <walker@pobox.com>
 ;; Homepage: http://github.com/rolandwalker/back-button
 ;; URL: http://raw.github.com/rolandwalker/back-button/master/back-button.el
-;; Version: 0.6.4
-;; Last-Updated: 14 Sep 2012
+;; Version: 0.6.6
+;; Last-Updated: 24 Oct 2013
 ;; EmacsWiki: BackButton
 ;; Keywords: convenience, navigation, interface
 ;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (ucs-utils "0.7.2") (persistent-soft "0.8.8") (pcache "0.2.3"))
@@ -235,7 +235,7 @@
 ;;;###autoload
 (defgroup back-button nil
   "Visual navigation through mark rings."
-  :version "0.6.4"
+  :version "0.6.6"
   :link '(emacs-commentary-link :tag "Commentary" "back-button")
   :link '(url-link :tag "GitHub" "http://github.com/rolandwalker/back-button")
   :link '(url-link :tag "EmacsWiki" "http://emacswiki.org/emacs/BackButton")
