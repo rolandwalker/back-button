@@ -7,7 +7,7 @@ Visual navigation through mark rings in Emacs.
 
 Two-way movement within the ring is supported.
 
-![back-button example](https://raw.github.com/rolandwalker/back-button/master/back_button_example.png)
+![back-button example](https://raw.githubusercontent.com/rolandwalker/back-button/master/back_button_example.png)
 
 Quickstart
 ----------
