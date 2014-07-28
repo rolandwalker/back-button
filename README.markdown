@@ -12,7 +12,7 @@ Two-way movement within the ring is supported.
 Quickstart
 ----------
 
-```lisp
+```elisp
 (require 'back-button)
  
 (back-button-mode 1)
