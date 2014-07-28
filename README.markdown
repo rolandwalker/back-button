@@ -1,7 +1,6 @@
 [![Build Status](https://secure.travis-ci.org/rolandwalker/back-button.png?branch=master)](http://travis-ci.org/rolandwalker/back-button)
 
-Overview
-========
+# Overview
 
 Visual navigation through mark rings in Emacs.
 
@@ -9,8 +8,7 @@ Two-way movement within the ring is supported.
 
 ![back-button example](https://raw.githubusercontent.com/rolandwalker/back-button/master/back_button_example.png)
 
-Quickstart
-----------
+## Quickstart
 
 ```elisp
 (require 'back-button)
@@ -25,8 +23,7 @@ Quickstart
 ;; to reverse the operation
 ```
 
-Explanation
------------
+## Explanation
 
 Back-button provides an alternative method for navigation by
 analogy with the "back" button in a web browser.
@@ -60,8 +57,7 @@ commands and/or set `back-button-never-push-mark` in customize.
 When the [visible-mark](http://www.emacswiki.org/emacs/visible-mark.el) package is installed, marks will be
 made visible in the current buffer during navigation.
 
-Default key bindings
---------------------
+## Default key bindings
 
 	C-x C-<SPC>    go back in `global-mark-ring`, respects prefix arg  
 	C-x C-<left>   go back in `global-mark-ring`  
@@ -74,8 +70,7 @@ Default key bindings
 When the [smartrep](http://github.com/myuhe/smartrep.el) package is installed, the `C-x` prefix need
 not be used for consecutive `back-button` commands.
 
-Notes
------
+## Notes
 
 This library depends upon other commands pushing the mark to
 provide useful waypoints for navigation.  This is a common
@@ -91,8 +86,7 @@ cause issues with Lisp code which depends on the convention that
 `global-mark-ring` not contain consecutive marks in the same
 buffer.  However, no such issues have been observed.
 
-Compatibility and Requirements
-------------------------------
+## Compatibility and Requirements
 
 	GNU Emacs version 24.4-devel     : yes, at the time of writing
 	GNU Emacs version 24.3           : yes
