@@ -59,15 +59,16 @@ made visible in the current buffer during navigation.
 
 ## Default key bindings
 
-	C-x C-<SPC>    go back in `global-mark-ring`, respects prefix arg  
-	C-x C-<left>   go back in `global-mark-ring`  
-	C-x C-<right>  go forward in `global-mark-ring`  
+Keystrokes                          | Action
+------------------------------------|--------------------------------
+<kbd>C-x</kbd> <kbd>C-<SPC></kbd>   | go back in `global-mark-ring`, respects prefix arg  
+<kbd>C-x</kbd> <kbd>C-<left></kbd>  | go back in `global-mark-ring`  
+<kbd>C-x</kbd> <kbd>C-<right></kbd> | go forward in `global-mark-ring`  
+<kbd>C-x</kbd> <kbd><SPC></kbd>     | go back in (buffer-local) `mark-ring`, respects prefix arg  
+<kbd>C-x</kbd> <kbd><left></kbd>    | go back in (buffer-local) `mark-ring`  
+<kbd>C-x</kbd> <kbd><right></kbd>   | go forward in (buffer-local) `mark-ring`  
 
-	C-x <SPC>      go back in (buffer-local) `mark-ring`, respects prefix arg  
-	C-x <left>     go back in (buffer-local) `mark-ring`  
-	C-x <right>    go forward in (buffer-local) `mark-ring`  
-
-When the [smartrep](http://github.com/myuhe/smartrep.el) package is installed, the `C-x` prefix need
+When the [smartrep](http://github.com/myuhe/smartrep.el) package is installed, the <kbd>C-x</kbd> prefix need
 not be used for consecutive `back-button` commands.
 
 ## Notes
