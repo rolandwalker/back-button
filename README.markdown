@@ -52,7 +52,7 @@ Commands and keybindings are also included to give identical
 semantics for navigating the local (per-buffer) `mark-ring`.  This
 consistency in navigation comes at the cost of pushing the mark
 twice, so experienced Emacs users may prefer to unbind these
-commands and/or set `back-button-never-push-mark` in customize.
+commands and/or set `back-button-never-push-mark` in `customize`.
 
 When the [visible-mark](http://www.emacswiki.org/emacs/visible-mark.el) package is installed, marks will be
 made visible in the current buffer during navigation.
