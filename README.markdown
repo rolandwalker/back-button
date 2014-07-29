@@ -95,5 +95,4 @@ buffer.  However, no such issues have been observed.
 	GNU Emacs version 22.2           : yes, with some limitations
 	GNU Emacs version 21.x and lower : unknown
 
-Uses if present: [smartrep.el](http://github.com/myuhe/smartrep.el), [nav-flash.el](http://github.com/rolandwalker/nav-flash), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el),
-[ucs-utils.el](http://github.com/rolandwalker/ucs-utils), [unicode-fonts.el](http://github.com/rolandwalker/unicode-fonts)
+Uses if present: [nav-flash.el](http://github.com/rolandwalker/nav-flash), [smartrep.el](http://github.com/myuhe/smartrep.el), [ucs-utils.el](http://github.com/rolandwalker/ucs-utils), [unicode-fonts.el](http://github.com/rolandwalker/unicode-fonts), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el)
