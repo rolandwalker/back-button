@@ -8,6 +8,12 @@ Two-way movement within the ring is supported.
 
 ![back-button example](https://raw.githubusercontent.com/rolandwalker/back-button/master/back_button_example.png)
 
+ * [Quickstart](#quickstart)
+ * [Explanation](#explanation)
+ * [Default key bindings](#default-key-bindings)
+ * [Notes](#notes)
+ * [Compatibility and Requirements](#compatibility-and-requirements)
+
 ## Quickstart
 
 ```elisp
@@ -37,16 +43,16 @@ This is essentially a replacement for `pop-global-mark`, and the
 default keybindings (when the minor mode is activated) override
 that command.  The differences with `pop-global-mark` are:
 
-* Visual index showing how far you have traveled in the
-  mark ring.
+ * Visual index showing how far you have traveled in the
+   mark ring.
 
-* Easy way to move both forward and backward in the ring.
+ * Easy way to move both forward and backward in the ring.
 
-* Pushes a mark on the first of a series of invocations, so you
-  can always return to where you issued the command.
+ * Pushes a mark on the first of a series of invocations, so you
+   can always return to where you issued the command.
 
-* Skips duplicate positions, so that the interactive command
-  always moves the point if possible.
+ * Skips duplicate positions, so that the interactive command
+   always moves the point if possible.
 
 Commands and keybindings are also included to give identical
 semantics for navigating the local (per-buffer) `mark-ring`.  This
