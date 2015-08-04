@@ -222,7 +222,6 @@
 (declare-function ucs-utils-char                    "ucs-utils.el")
 (declare-function smartrep-define-key               "smartrep.el")
 (declare-function visible-mark-initialize-overlays  "visible-mark.el")
-(declare-function visible-mark-initialize-faces     "visible-mark.el")
 (declare-function visible-mark-move-overlays        "visible-mark.el")
 (declare-function back-button-push-mark             "back-button.el")
 
@@ -627,7 +626,8 @@ TYPE may be 'global or 'local."
         (when (not (minibufferp (current-buffer)))
           (let ((visible-mark-max (length mark-ring)))
             (visible-mark-initialize-overlays)
-            (visible-mark-initialize-faces)
+            (when (fboundp 'visible-mark-initialize-faces)
+              (visible-mark-initialize-faces))
             (let ((mark-ring mark-ring))
               (when (eq type 'global)
                 (setq mark-ring global-mark-ring))
