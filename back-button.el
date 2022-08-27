@@ -9,7 +9,7 @@
 ;; Last-Updated:  4 Aug 2015
 ;; EmacsWiki: BackButton
 ;; Keywords: convenience, navigation, interface
-;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (ucs-utils "0.7.2") (list-utils "0.4.2") (persistent-soft "0.8.8") (pcache "0.2.3"))
+;; Package-Requires: ((nav-flash "1.0.0") (smartrep "0.0.3") (list-utils "0.4.2") (persistent-soft "0.8.8") (pcache "0.2.3"))
 ;;
 ;; Simplified BSD License
 ;;
@@ -112,8 +112,7 @@
 ;;     GNU Emacs version 22.2           : yes, with some limitations
 ;;     GNU Emacs version 21.x and lower : unknown
 ;;
-;;     Uses if present: smartrep.el, nav-flash.el, visible-mark.el,
-;;                      ucs-utils.el
+;;     Uses if present: smartrep.el, nav-flash.el, visible-mark.el
 ;;
 ;; Bugs
 ;;
@@ -210,16 +209,14 @@
 ;;; requirements
 
 ;; for decf, callf, position
-(require 'cl)
+(require 'cl-lib)
 
 (require 'smartrep     nil t)
 (require 'nav-flash    nil t)
 (require 'visible-mark nil t)
-(require 'ucs-utils    nil t)
 
 ;;; declarations
 
-(declare-function ucs-utils-char                    "ucs-utils.el")
 (declare-function smartrep-define-key               "smartrep.el")
 (declare-function visible-mark-initialize-overlays  "visible-mark.el")
 (declare-function visible-mark-move-overlays        "visible-mark.el")
@@ -412,9 +409,16 @@ The format for key sequences is as defined by `kbd'."
 (defvar back-button-spacer-char     ?.  "Character used to indicate marks available for navigation.")
 (defvar back-button-thumb-char      ?o  "Character used to indicate current mark.")
 
-(when (featurep 'ucs-utils)
-  (setq back-button-spacer-char (ucs-utils-char back-button-index-spacer-ucs-name back-button-spacer-char 'cdp))
-  (setq back-button-thumb-char  (ucs-utils-char back-button-index-thumb-ucs-name  back-button-thumb-char  'cdp)))
+(defun back-button--char (name fallback)
+  (let ((char (if (version< emacs-version "26")
+                      (cdr (assoc-string name (ucs-names) t))
+                (char-from-name name t))))
+    (if (and char (char-displayable-p char))
+        char
+      fallback)))
+
+(setq back-button-spacer-char (back-button--char back-button-index-spacer-ucs-name back-button-spacer-char))
+(setq back-button-thumb-char (back-button--char back-button-index-thumb-ucs-name  back-button-thumb-char))
 
 (defvar back-button-lighter-menu-mouse-button 1
   "Which mouse button invokes the modeline context menu.")
@@ -534,7 +538,7 @@ The format for key sequences is as defined by `kbd'."
 
 (when (and (stringp back-button-mode-lighter)
            (> (length back-button-mode-lighter) 0))
-  (callf propertize back-button-mode-lighter
+  (cl-callf propertize back-button-mode-lighter
                     back-button-lighter-keymap-property back-button-lighter-map
                     'help-echo (format "Back-button: mouse-%s menu\nmouse-wheel and control-mouse-wheel to navigate" back-button-lighter-menu-mouse-button)))
 
@@ -588,7 +592,7 @@ is pushed onto `global-mark-ring'.
 When CONSECUTIVES is set to 'allow-dupes, it is possible to push
 an exact duplicate of the current topmost mark onto `global-mark-ring'."
   (interactive)
-  (callf or location (point))
+  (cl-callf or location (point))
   (back-button-push-mark location nomsg activate)
   (when (or (eq consecutives 'allow-dupes)
             (not (equal (mark-marker)
@@ -643,7 +647,7 @@ TYPE may be 'global or 'local."
     (when (eq type 'local)
       (setq ring mark-ring)
       (setq copy back-button-local-marks-copy))
-    (setq posn (or (position thumb copy) 1))
+    (setq posn (or (cl-position thumb copy) 1))
     ;; scan across duplicates and place visible thumb
     ;; on a consistent boundary; looks more intuitive
     (while (and (> posn 0)
@@ -771,7 +775,7 @@ web browser back-button.)"
                 (> counter 0))
       (back-button-pop-local-mark)
       (setq thumb (car (last mark-ring)))
-      (decf counter))
+      (cl-decf counter))
     (when (consp arg)
       (setq mark-ring (nreverse mark-ring)))
     (when (and (not (eq thumb stopper))
@@ -826,7 +830,7 @@ web browser back-button.)"
                          (> counter 0))))
       (pop-global-mark)
       (setq thumb (car (last global-mark-ring)))
-      (decf counter))
+      (cl-decf counter))
     (when (consp arg)
       (setq global-mark-ring (nreverse global-mark-ring)))
     (when (and (not (eq thumb stopper))
