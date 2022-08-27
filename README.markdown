@@ -101,4 +101,8 @@ buffer.  However, no such issues have been observed.
 	GNU Emacs version 22.2           : yes, with some limitations
 	GNU Emacs version 21.x and lower : unknown
 
+For GNU Emacs versions lower than 24.3, the
+[cl-lib](https://elpa.gnu.org/packages/cl-lib.html) package is
+required.
+
 Uses if present: [nav-flash.el](http://github.com/rolandwalker/nav-flash), [smartrep.el](http://github.com/myuhe/smartrep.el), [unicode-fonts.el](http://github.com/rolandwalker/unicode-fonts), [visible-mark.el](http://www.emacswiki.org/emacs/visible-mark.el)
